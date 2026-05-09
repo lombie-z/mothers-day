@@ -31,7 +31,7 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
   const { data: tinaData } = useTina({
     query,
     variables,
-    data,
+    data: data as object,
     experimental___selectFormByFormId: () => "content/settings.json",
   });
 

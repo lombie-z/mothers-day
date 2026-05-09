@@ -86,22 +86,22 @@ function Scene() {
     let geo: THREE.BufferGeometry | null = null;
     roseGltf.scene.traverse((child) => {
       if (child instanceof THREE.Mesh && !geo) {
-        // First mesh child = red petals (skip green stem)
         const mat = child.material as THREE.MeshStandardMaterial;
         if (mat && mat.color && mat.color.r > 0.5) {
-          geo = child.geometry.clone();
-          geo.translate(0, -8.2, 0);
-          geo.scale(0.035, 0.035, 0.035);
+          const g = child.geometry.clone();
+          g.translate(0, -8.2, 0);
+          g.scale(0.035, 0.035, 0.035);
+          geo = g;
         }
       }
     });
-    // Fallback: use first mesh if color check didn't match
     if (!geo) {
       roseGltf.scene.traverse((child) => {
         if (child instanceof THREE.Mesh && !geo) {
-          geo = child.geometry.clone();
-          geo.translate(0, -8.2, 0);
-          geo.scale(0.035, 0.035, 0.035);
+          const g = child.geometry.clone();
+          g.translate(0, -8.2, 0);
+          g.scale(0.035, 0.035, 0.035);
+          geo = g;
         }
       });
     }

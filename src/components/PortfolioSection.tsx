@@ -41,7 +41,7 @@ export default function PortfolioSection({
       style={{ maxWidth: "80vw" }}
     >
       {item.image && (
-        <div data-tina-field={tinaField(item, "image")}>
+        <div data-tina-field={tinaField(item as unknown as Record<string, unknown>, "image")}>
           <div
             className="relative overflow-hidden"
             style={{
@@ -63,7 +63,7 @@ export default function PortfolioSection({
       )}
 
       <h2
-        data-tina-field={tinaField(item, "title")}
+        data-tina-field={tinaField(item as unknown as Record<string, unknown>, "title")}
         className="text-3xl md:text-5xl text-center font-light"
         style={{
           fontFamily: "var(--font-cormorant)",
@@ -85,7 +85,7 @@ export default function PortfolioSection({
 
       {item.description && (
         <p
-          data-tina-field={tinaField(item, "description")}
+          data-tina-field={tinaField(item as unknown as Record<string, unknown>, "description")}
           className="text-sm md:text-base text-center max-w-md font-light"
           style={{ color: textColor }}
         >

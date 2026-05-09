@@ -16,12 +16,12 @@ export default function WorkPage({ query, variables, data }: WorkPageProps) {
   const { data: tinaData } = useTina({
     query,
     variables,
-    data,
+    data: data as object,
     experimental___selectFormByFormId: () => "content/portfolio.json",
   });
 
-  const works: PortfolioItem[] = ((tinaData as Record<string, Record<string, { works?: PortfolioItem[] }>>)
-    ?.portfolio?.works ?? []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const works: PortfolioItem[] = (tinaData as any)?.portfolio?.works ?? [];
 
   const router = useRouter();
   const [current, setCurrent] = useState(0);
