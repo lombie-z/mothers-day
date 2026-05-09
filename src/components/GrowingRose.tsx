@@ -368,7 +368,7 @@ export default function GrowingRose() {
   if (!ok) return <div className="absolute inset-0" />;
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }}>
+      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={[1, 1.5]}>
         <Scene />
       </Canvas>
     </div>
