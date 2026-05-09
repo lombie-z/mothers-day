@@ -5,32 +5,26 @@
       "image": "/uploads/portfolio/Mothers day.png",
       "description": "Happy mothers day! Created this website to show off your art.",
       "date": "2025-03-15T00:00:00.000Z",
-      "background": "#f0ebe3",
-      "vineEdges": [
-        "left",
-        "bottom"
-      ]
+      "imageWidth": 4000,
+      "imageHeight": 3000,
+      "background": "#f0ebe3"
     },
     {
       "title": "Instructions",
       "image": "/uploads/portfolio/instructions.png",
       "description": "",
       "date": "2026-01-10T00:00:00.000Z",
-      "background": "#1a1a2e",
-      "vineEdges": [
-        "left",
-        "right"
-      ]
+      "imageWidth": 4000,
+      "imageHeight": 3000,
+      "background": "#1a1a2e"
     },
     {
       "title": "Mothers Day (II)",
       "image": "/uploads/Mothers Day Art.png",
       "description": "Digital art to celebrate mothers day",
       "date": "2025-09-20T00:00:00.000Z",
-      "vineEdges": [
-        "right",
-        "top"
-      ]
+      "imageWidth": 4000,
+      "imageHeight": 3000
     }
   ]
 }

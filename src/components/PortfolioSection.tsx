@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { tinaField } from "tinacms/dist/react";
 
@@ -8,7 +9,53 @@ export interface PortfolioItem {
   image: string;
   description?: string | null;
   date?: string | null;
+  imageWidth?: number | null;
+  imageHeight?: number | null;
   background?: string | null;
+}
+
+function ImageWithSkeleton({ item, light }: { item: PortfolioItem; light: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
+  const w = item.imageWidth || 800;
+  const h = item.imageHeight || 600;
+
+  useEffect(() => {
+    const maxH = window.innerHeight * 0.55;
+    const maxW = window.innerWidth * 0.7;
+    const scale = Math.min(maxW / w, maxH / h, 1);
+    setSize({ w: Math.round(w * scale), h: Math.round(h * scale) });
+  }, [w, h]);
+
+  if (!size) return null;
+
+  return (
+    <div data-tina-field={tinaField(item as unknown as Record<string, unknown>, "image")}>
+      <div
+        className="relative overflow-hidden"
+        style={{
+          width: size.w,
+          height: size.h,
+          border: `1px solid ${light ? "rgba(60,20,30,0.1)" : "rgba(245, 198, 208, 0.2)"}`,
+          background: light ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
+        }}
+      >
+        <Image
+          src={item.image}
+          alt={item.title}
+          width={w}
+          height={h}
+          className="object-contain transition-opacity duration-700"
+          style={{
+            width: size.w,
+            height: size.h,
+            opacity: loaded ? 1 : 0,
+          }}
+          onLoad={() => setLoaded(true)}
+        />
+      </div>
+    </div>
+  );
 }
 
 function isLightBg(hex?: string | null) {
@@ -41,25 +88,7 @@ export default function PortfolioSection({
       style={{ maxWidth: "80vw" }}
     >
       {item.image && (
-        <div data-tina-field={tinaField(item as unknown as Record<string, unknown>, "image")}>
-          <div
-            className="relative overflow-hidden"
-            style={{
-              border: `1px solid ${light ? "rgba(60,20,30,0.1)" : "rgba(245, 198, 208, 0.2)"}`,
-              maxHeight: "55vh",
-              maxWidth: "70vw",
-            }}
-          >
-            <Image
-              src={item.image}
-              alt={item.title}
-              width={800}
-              height={600}
-              className="object-contain"
-              style={{ maxHeight: "55vh", width: "auto", height: "auto" }}
-            />
-          </div>
-        </div>
+        <ImageWithSkeleton item={item} light={light} />
       )}
 
       <h2

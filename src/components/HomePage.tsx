@@ -53,7 +53,7 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
             className="text-4xl sm:text-6xl md:text-8xl leading-relaxed tracking-wide"
             style={{
               fontFamily: "var(--font-ms-madi)",
-              padding: "4px 0 8px 8px",
+              padding: "4px 12px 8px 8px",
               background: "linear-gradient(90deg, #f5c6d0, #e8a0b0, #f2d0d8, #dba0b8, #f5c6d0)",
               backgroundSize: "300% 100%",
               WebkitBackgroundClip: "text",

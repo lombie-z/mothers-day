@@ -1,4 +1,5 @@
 import { defineConfig } from "tinacms";
+import { ImageWithDimensions } from "./ImageWithDimensions";
 
 export default defineConfig({
   branch: process.env.TINA_BRANCH || "main",
@@ -96,6 +97,9 @@ export default defineConfig({
                 label: "Image",
                 name: "image",
                 required: true,
+                ui: {
+                  component: ImageWithDimensions,
+                },
               },
               {
                 type: "string",
@@ -109,18 +113,26 @@ export default defineConfig({
                 name: "date",
               },
               {
+                type: "number",
+                name: "imageWidth",
+                label: "Image Width",
+                ui: { component: () => null },
+              },
+              {
+                type: "number",
+                name: "imageHeight",
+                label: "Image Height",
+                ui: { component: () => null },
+              },
+              {
                 type: "string",
                 label: "Background",
                 name: "background",
-                options: [
-                  { value: "#8b2a4a", label: "Burgundy (default)" },
-                  { value: "#1a0408", label: "Deep Black" },
-                  { value: "#2a1a2e", label: "Dark Plum" },
-                  { value: "#1a1a2e", label: "Midnight Blue" },
-                  { value: "#f5e6eb", label: "Blush Pink" },
-                  { value: "#f0ebe3", label: "Cream" },
-                  { value: "#e8ddd3", label: "Warm Linen" },
-                ],
+                ui: {
+                  component: "color",
+                  colorFormat: "hex",
+                  colors: ["#8b2a4a", "#1a0408", "#2a1a2e", "#1a1a2e", "#f5e6eb", "#f0ebe3", "#e8ddd3"],
+                },
               },
             ],
           },
