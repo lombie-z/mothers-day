@@ -1,0 +1,36 @@
+{
+  "works": [
+    {
+      "title": "Mothers Day (I)",
+      "image": "/uploads/portfolio/Mothers day.png",
+      "description": "Happy mothers day! Created this website to show off your art.",
+      "date": "2025-03-15T00:00:00.000Z",
+      "background": "#f0ebe3",
+      "vineEdges": [
+        "left",
+        "bottom"
+      ]
+    },
+    {
+      "title": "Instructions",
+      "image": "/uploads/portfolio/instructions.png",
+      "description": "",
+      "date": "2026-01-10T00:00:00.000Z",
+      "background": "#1a1a2e",
+      "vineEdges": [
+        "left",
+        "right"
+      ]
+    },
+    {
+      "title": "Mothers Day (II)",
+      "image": "/uploads/Mothers Day Art.png",
+      "description": "Digital art to celebrate mothers day",
+      "date": "2025-09-20T00:00:00.000Z",
+      "vineEdges": [
+        "right",
+        "top"
+      ]
+    }
+  ]
+}

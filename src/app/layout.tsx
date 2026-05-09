@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Ms_Madi } from "next/font/google";
+import { Geist, Ms_Madi, Cormorant_Garamond } from "next/font/google";
+import SiteNav from "@/components/SiteNav";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,6 +11,12 @@ const geistSans = Geist({
 const msMadi = Ms_Madi({
   variable: "--font-ms-madi",
   weight: "400",
+  subsets: ["latin"],
+});
+
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  weight: ["300", "400", "600"],
   subsets: ["latin"],
 });
 
@@ -26,9 +33,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${msMadi.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${msMadi.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <SiteNav />
+      </body>
     </html>
   );
 }

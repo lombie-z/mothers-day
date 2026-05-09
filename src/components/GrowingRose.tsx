@@ -3,7 +3,9 @@
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
+import { EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
+import { Watercolor } from "./Watercolor";
 
 const GROW_RATE = 0.045;
 const SEG_H = 0.03;
@@ -327,14 +329,14 @@ function Scene() {
 
     // Camera (Philip's approach: fixed high position, vine grows into view)
     const top = stem.current[stem.current.length - 1];
-    if (top) ct.current.lerp(new THREE.Vector3(top.x, top.y, top.z), 0.04);
+    if (top) { _d.set(top.x, top.y, top.z); ct.current.lerp(_d, 0.04); }
 
     ov.current += 0.002;
-    const camR = 3.5;
+    const camR = 1.4;
     const orbX = -Math.cos(ov.current) * camR + ct.current.x;
     const orbZ = Math.sin(ov.current) * camR + ct.current.z;
     const tipY = ct.current.y;
-    const goalY = tipY > 2 ? tipY + 3 : 5;
+    const goalY = tipY > 1 ? tipY + 1.2 : 2.2;
 
     // Smooth motion (Philip's factor=2 interpolation)
     camera.position.x = (camera.position.x * 2 + orbX) / 3;
@@ -345,12 +347,17 @@ function Scene() {
 
   return (
     <>
-      <fog attach="fog" args={["#3a0a15", 7, 18]} />
+      <color attach="background" args={["#8b2a4a"]} />
+      <fog attach="fog" args={["#8b2a4a", 2, 5]} />
       <ambientLight intensity={0.6} />
       <directionalLight position={[2, 8, 4]} intensity={0.4} />
       <instancedMesh ref={wRef} args={[wGeo, wMat, W]} frustumCulled={false} />
       <instancedMesh ref={lRef} args={[lGeo, lMat, L]} frustumCulled={false} />
       <instancedMesh ref={rRef} args={[rGeo, rMat, R]} frustumCulled={false} />
+
+      <EffectComposer>
+        <Watercolor kernelSize={8} />
+      </EffectComposer>
     </>
   );
 }
@@ -361,7 +368,7 @@ export default function GrowingRose() {
   if (!ok) return <div className="absolute inset-0" />;
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 5, 3.5], fov: 60 }} gl={{ alpha: true }}>
+      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }}>
         <Scene />
       </Canvas>
     </div>

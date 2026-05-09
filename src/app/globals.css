@@ -11,7 +11,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #1a0408;
+  background: #8b2a4a;
 }
 
 @keyframes text-breathe {
@@ -31,22 +31,6 @@ body {
     #f2d0d8,
     #dba0b8,
     #f5c6d0
-  );
-  background-size: 300% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: text-breathe 8s ease-in-out infinite;
-}
-
-.animate-text-breathe-subtle {
-  background: linear-gradient(
-    90deg,
-    rgba(245, 198, 208, 0.6),
-    rgba(232, 160, 176, 0.5),
-    rgba(242, 208, 216, 0.6),
-    rgba(219, 160, 184, 0.5),
-    rgba(245, 198, 208, 0.6)
   );
   background-size: 300% 100%;
   -webkit-background-clip: text;
