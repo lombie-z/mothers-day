@@ -241,7 +241,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
     }
 
     // === RENDER (skip matrix rebuilds on idle frames) ===
-    if (grew || frameCount.current % 3 === 0) {
+    if (!isMobile || grew || frameCount.current % 3 === 0) {
     const w = wRef.current;
     if (w) {
       let c = 0;
