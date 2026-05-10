@@ -7,7 +7,7 @@ import { EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { Watercolor } from "./Watercolor";
 
-const GROW_RATE = 0.045;
+const GROW_RATE = 0.065;
 const SEG_H = 0.03;
 const BRANCH_CHANCE = 0.25;
 const MAX_DEPTH = 2;
