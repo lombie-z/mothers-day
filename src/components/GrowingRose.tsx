@@ -258,7 +258,8 @@ function Scene({ isMobile }: { isMobile: boolean }) {
         // Gradual taper along stem length
         const taper = 0.6 + 0.5 * (1 - i / Math.max(stemLen, 1));
         const distFromTip = stemLen - 1 - i;
-        const tipTaper = distFromTip < 3 ? 0.2 + 0.8 * (distFromTip / 3) : 1.0;
+        const t = distFromTip < 10 ? distFromTip / 10 : 1.0;
+        const tipTaper = 0.02 + 0.98 * t * t * (3 - 2 * t);
         const thick = taper * tipTaper * f;
         _d.set(s.dx, s.dy, s.dz).normalize();
         dm.position.set(s.x, s.y, s.z);
@@ -281,7 +282,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
             tipSeg.z + tipSeg.dz * SEG_H * lastGrowIn
           );
           dm.quaternion.setFromUnitVectors(_u, _d);
-          dm.scale.set(0.1, SEG_H * tipProgress, 0.1);
+          dm.scale.set(0.02, SEG_H * tipProgress, 0.02);
           dm.updateMatrix();
           w.setMatrixAt(c++, dm.matrix);
         }
@@ -384,7 +385,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
       <instancedMesh ref={rRef} args={[rGeo, rMat, R]} frustumCulled={false} />
 
       <EffectComposer>
-        <Watercolor kernelSize={8} />
+        <Watercolor kernelSize={6} />
       </EffectComposer>
     </>
   );
