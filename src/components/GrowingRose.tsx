@@ -49,7 +49,9 @@ function dev(dx: number, dy: number, dz: number, up: number): [number, number, n
 
 // nothing here — using inline random walk below
 
-function Scene() {
+function Scene({ isMobile }: { isMobile: boolean }) {
+  const growRate = isMobile ? 0.09 : GROW_RATE;
+  const frameCount = useRef(-1);
   const stem = useRef<S[]>([{ x: 0, y: 0, z: 0, dx: 0, dy: 1, dz: 0, age: 0 }]);
   const sDir = useRef<[number, number, number]>([0, 1, 0]);
   const wanderX = useRef(0);
@@ -174,6 +176,8 @@ function Scene() {
   }
 
   useFrame(({ camera }, delta) => {
+    frameCount.current++;
+
     // Age
     for (const s of stem.current) s.age += delta;
     for (const b of brs.current) for (const s of b.segs) s.age += delta;
@@ -194,7 +198,9 @@ function Scene() {
 
     // Grow
     tmr.current += delta;
-    if (tmr.current >= GROW_RATE) {
+    let grew = false;
+    if (tmr.current >= growRate) {
+      grew = true;
       tmr.current = 0;
       stepCount.current++;
       const ls = stem.current[stem.current.length - 1];
@@ -234,11 +240,12 @@ function Scene() {
       for (const br of brs.current) if (br.growing) growBr(br);
     }
 
-    // === RENDER ===
+    // === RENDER (skip matrix rebuilds on idle frames) ===
+    if (grew || frameCount.current % 3 === 0) {
     const w = wRef.current;
     if (w) {
       let c = 0;
-      const GROW_IN = GROW_RATE * 1.2; // time for a segment to reach full height
+      const GROW_IN = growRate * 1.2;
 
       // Main stem
       const stemLen = stem.current.length;
@@ -326,6 +333,7 @@ function Scene() {
       rs.count = c;
       rs.instanceMatrix.needsUpdate = true;
     }
+    } // end matrix update throttle
 
     // Camera (Philip's approach: fixed high position, vine grows into view)
     const top = stem.current[stem.current.length - 1];
@@ -364,12 +372,16 @@ function Scene() {
 
 export default function GrowingRose() {
   const [ok, setOk] = useState(false);
-  useEffect(() => setOk(true), []);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    setOk(true);
+  }, []);
   if (!ok) return <div className="absolute inset-0" />;
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={[1, 1.5]}>
-        <Scene />
+      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={isMobile ? 1 : [1, 1.5]}>
+        <Scene isMobile={isMobile} />
       </Canvas>
     </div>
   );
