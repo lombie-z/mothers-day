@@ -356,7 +356,8 @@ function Scene({ isMobile }: { isMobile: boolean }) {
 
     // Camera (Philip's approach: fixed high position, vine grows into view)
     const top = stem.current[stem.current.length - 1];
-    if (top) { _d.set(top.x, top.y, top.z); ct.current.lerp(_d, 0.04); }
+    const targetSmooth = 1 - Math.exp(-2 * delta);
+    if (top) { _d.set(top.x, top.y, top.z); ct.current.lerp(_d, targetSmooth); }
 
     ov.current += 0.002;
     const camR = 1.4;
@@ -365,10 +366,10 @@ function Scene({ isMobile }: { isMobile: boolean }) {
     const tipY = ct.current.y;
     const goalY = tipY > 1 ? tipY + 1.2 : 2.2;
 
-    // Smooth motion (Philip's factor=2 interpolation)
-    camera.position.x = (camera.position.x * 2 + orbX) / 3;
-    camera.position.y = (camera.position.y * 2 + goalY) / 3;
-    camera.position.z = (camera.position.z * 2 + orbZ) / 3;
+    const camSmooth = 1 - Math.exp(-24 * delta);
+    camera.position.x += (orbX - camera.position.x) * camSmooth;
+    camera.position.y += (goalY - camera.position.y) * camSmooth;
+    camera.position.z += (orbZ - camera.position.z) * camSmooth;
     camera.lookAt(ct.current);
   });
 
