@@ -7,7 +7,7 @@ import { EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
 import { Watercolor } from "./Watercolor";
 
-const GROW_RATE = 0.065;
+const GROW_RATE = 0.085;
 const SEG_H = 0.03;
 const BRANCH_CHANCE = 0.25;
 const MAX_DEPTH = 2;
@@ -245,7 +245,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
     const w = wRef.current;
     if (w) {
       let c = 0;
-      const GROW_IN = growRate * 1.2;
+      const GROW_IN = 0.18;
 
       // Main stem
       const stemLen = stem.current.length;
