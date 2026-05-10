@@ -245,7 +245,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
     const w = wRef.current;
     if (w) {
       let c = 0;
-      const GROW_IN = 0.18;
+      const GROW_IN = growRate;
 
       // Main stem
       const stemLen = stem.current.length;
@@ -266,6 +266,25 @@ function Scene({ isMobile }: { isMobile: boolean }) {
         dm.scale.set(thick, SEG_H * growIn, thick);
         dm.updateMatrix();
         w.setMatrixAt(c++, dm.matrix);
+      }
+      // Virtual tip: smoothly extends between growth ticks so the tip never stops moving
+      if (c < W && stemLen > 0) {
+        const tipSeg = stem.current[stemLen - 1];
+        const tipProgress = tmr.current / growRate;
+        if (tipProgress > 0.02) {
+          const lastGrowIn = Math.min(1, tipSeg.age / GROW_IN);
+          const [sdx, sdy, sdz] = sDir.current;
+          _d.set(sdx, sdy, sdz).normalize();
+          dm.position.set(
+            tipSeg.x + tipSeg.dx * SEG_H * lastGrowIn,
+            tipSeg.y + tipSeg.dy * SEG_H * lastGrowIn,
+            tipSeg.z + tipSeg.dz * SEG_H * lastGrowIn
+          );
+          dm.quaternion.setFromUnitVectors(_u, _d);
+          dm.scale.set(0.1, SEG_H * tipProgress, 0.1);
+          dm.updateMatrix();
+          w.setMatrixAt(c++, dm.matrix);
+        }
       }
       // Branches
       for (const br of brs.current) {
