@@ -8,7 +8,7 @@ import * as THREE from "three";
 import { Watercolor } from "./Watercolor";
 
 const GROW_RATE = 0.085;
-const SEG_H = 0.03;
+const SEG_H = 0.015;
 const BRANCH_CHANCE = 0.25;
 const MAX_DEPTH = 2;
 const MAX_BR_SEGS = 14;
