@@ -50,10 +50,10 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
           style={{ paddingTop: "12vh", paddingLeft: "5vw", paddingRight: "5vw" }}
         >
           <h1
-            className="text-4xl sm:text-6xl md:text-8xl leading-relaxed tracking-wide"
+            className="text-4xl sm:text-6xl md:text-8xl leading-none tracking-wide"
             style={{
-              fontFamily: "var(--font-ms-madi)",
-              padding: "4px 12px 8px 8px",
+              fontFamily: "var(--font-glass)",
+              padding: "4px 0",
               background: "linear-gradient(90deg, #f5c6d0, #e8a0b0, #f2d0d8, #dba0b8, #f5c6d0)",
               backgroundSize: "300% 100%",
               WebkitBackgroundClip: "text",
@@ -65,7 +65,7 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
             {settings.heading || "Magdalen Rozsa"}
           </h1>
           <p
-            className="text-sm md:text-base mt-6 tracking-widest uppercase font-light"
+            className="text-sm md:text-base mt-1 tracking-widest uppercase font-light"
             style={{
               background: "linear-gradient(90deg, rgba(245,198,208,0.6), rgba(232,160,176,0.5), rgba(242,208,216,0.6), rgba(219,160,184,0.5), rgba(245,198,208,0.6))",
               backgroundSize: "300% 100%",
