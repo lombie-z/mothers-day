@@ -24,7 +24,8 @@
       "description": "",
       "date": "2026-05-04T00:00:00.000Z",
       "imageWidth": 2827,
-      "imageHeight": 1999
+      "imageHeight": 1999,
+      "background": "#12364A"
     }
   ]
 }
