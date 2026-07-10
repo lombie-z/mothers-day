@@ -49,8 +49,8 @@ function dev(dx: number, dy: number, dz: number, up: number): [number, number, n
 
 // nothing here — using inline random walk below
 
-function Scene({ isMobile }: { isMobile: boolean }) {
-  const growRate = isMobile ? 0.09 : GROW_RATE;
+function Scene({ lite }: { lite: boolean }) {
+  const growRate = lite ? 0.09 : GROW_RATE;
   const frameCount = useRef(-1);
   const stem = useRef<S[]>([{ x: 0, y: 0, z: 0, dx: 0, dy: 1, dz: 0, age: 0 }]);
   const sDir = useRef<[number, number, number]>([0, 1, 0]);
@@ -241,7 +241,7 @@ function Scene({ isMobile }: { isMobile: boolean }) {
     }
 
     // === RENDER (skip matrix rebuilds on idle frames) ===
-    if (!isMobile || grew || frameCount.current % 3 === 0) {
+    if (!lite || grew || frameCount.current % 3 === 0) {
     const w = wRef.current;
     if (w) {
       let c = 0;
@@ -384,25 +384,37 @@ function Scene({ isMobile }: { isMobile: boolean }) {
       <instancedMesh ref={lRef} args={[lGeo, lMat, L]} frustumCulled={false} />
       <instancedMesh ref={rRef} args={[rGeo, rMat, R]} frustumCulled={false} />
 
-      <EffectComposer>
-        <Watercolor kernelSize={6} />
-      </EffectComposer>
+      {/* Kuwahara watercolour pass is ~169 texture samples/pixel/frame — skip it on slow devices */}
+      {!lite && (
+        <EffectComposer>
+          <Watercolor kernelSize={6} />
+        </EffectComposer>
+      )}
     </>
   );
 }
 
 export default function GrowingRose() {
   const [ok, setOk] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [lite, setLite] = useState(false);
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // "lite" = drop the expensive watercolour pass + DPR: phones, low-core/low-memory
+    // machines, or anyone who's asked for reduced motion.
+    const slow =
+      window.innerWidth < 768 ||
+      reduced ||
+      (nav.hardwareConcurrency ?? 8) <= 4 ||
+      (nav.deviceMemory ?? 8) <= 4;
+    setLite(slow);
     setOk(true);
   }, []);
   if (!ok) return <div className="absolute inset-0" />;
   return (
     <div className="absolute inset-0">
-      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={isMobile ? 1 : [1, 1.5]}>
-        <Scene isMobile={isMobile} />
+      <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={lite ? 1 : [1, 1.5]}>
+        <Scene lite={lite} />
       </Canvas>
     </div>
   );
