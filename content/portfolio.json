@@ -32,7 +32,8 @@
       "image": "/uploads/IMG_7579.jpg",
       "date": "2026-05-03T10:59:07.787Z",
       "imageWidth": 2727,
-      "imageHeight": 3888
+      "imageHeight": 3888,
+      "background": "#174564"
     }
   ]
 }
