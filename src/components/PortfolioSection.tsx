@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { tinaField } from "tinacms/dist/react";
 
@@ -16,26 +16,16 @@ export interface PortfolioItem {
 
 function ImageWithSkeleton({ item, light }: { item: PortfolioItem; light: boolean }) {
   const [loaded, setLoaded] = useState(false);
-  const [size, setSize] = useState<{ w: number; h: number } | null>(null);
   const w = item.imageWidth || 800;
   const h = item.imageHeight || 600;
-
-  useEffect(() => {
-    const maxH = window.innerHeight * 0.55;
-    const maxW = window.innerWidth * 0.7;
-    const scale = Math.min(maxW / w, maxH / h, 1);
-    setSize({ w: Math.round(w * scale), h: Math.round(h * scale) });
-  }, [w, h]);
-
-  if (!size) return null;
 
   return (
     <div data-tina-field={tinaField(item as unknown as Record<string, unknown>, "image")}>
       <div
         className="relative overflow-hidden"
         style={{
-          width: size.w,
-          height: size.h,
+          width: `min(70vw, ${w}px, ${55 * w / h}vh)`,
+          aspectRatio: `${w} / ${h}`,
           border: `1px solid ${light ? "rgba(60,20,30,0.1)" : "rgba(245, 198, 208, 0.2)"}`,
           background: light ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.05)",
         }}
@@ -47,8 +37,8 @@ function ImageWithSkeleton({ item, light }: { item: PortfolioItem; light: boolea
           height={h}
           className="object-contain transition-opacity duration-700"
           style={{
-            width: size.w,
-            height: size.h,
+            width: "100%",
+            height: "100%",
             opacity: loaded ? 1 : 0,
           }}
           onLoad={() => setLoaded(true)}

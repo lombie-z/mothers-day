@@ -66,14 +66,6 @@ export default function SiteNav() {
       .catch(() => {});
   }, []);
 
-  // Also try reading from window if useTina has populated it
-  useEffect(() => {
-    try {
-      const raw = document.querySelector('[data-settings]')?.getAttribute('data-settings');
-      if (raw) setSettings(JSON.parse(raw));
-    } catch {}
-  }, []);
-
   return (
     <>
       <motion.div

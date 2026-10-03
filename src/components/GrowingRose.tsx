@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { EffectComposer } from "@react-three/postprocessing";
@@ -21,7 +21,6 @@ const W = 1800;
 const L = 1000;
 const R = 80;
 const LEAF_FADE_AGE = 6;
-const BG = "#9ab06f";
 
 function fd(age: number) {
   if (age < FADE_AGE) return 1;
@@ -40,9 +39,9 @@ function dev(dx: number, dy: number, dz: number, up: number): [number, number, n
   const c = Math.cos(a), sn = Math.sin(a);
   const px = -dz, pz = dx;
   const pl = Math.sqrt(px * px + pz * pz) || 1;
-  let nx = dx * c + (pz / pl) * sn * dy;
-  let ny = dy * c + up;
-  let nz = dz * c - (px / pl) * sn * dy;
+  const nx = dx * c + (pz / pl) * sn * dy;
+  const ny = dy * c + up;
+  const nz = dz * c - (px / pl) * sn * dy;
   const l = Math.sqrt(nx * nx + ny * ny + nz * nz) || 1;
   return [nx / l, ny / l, nz / l];
 }
@@ -120,9 +119,6 @@ function Scene({ lite }: { lite: boolean }) {
   const dm = useMemo(() => new THREE.Object3D(), []);
   const _u = useMemo(() => new THREE.Vector3(0, 1, 0), []);
   const _d = useMemo(() => new THREE.Vector3(), []);
-  const _xA = useMemo(() => new THREE.Vector3(), []);
-  const _zA = useMemo(() => new THREE.Vector3(), []);
-  const _rotMat = useMemo(() => new THREE.Matrix4(), []);
 
   function getPerp(dx: number, dy: number, dz: number): [number, number] {
     // Get a perpendicular XZ direction to the stem
@@ -395,22 +391,18 @@ function Scene({ lite }: { lite: boolean }) {
 }
 
 export default function GrowingRose() {
-  const [ok, setOk] = useState(false);
-  const [lite, setLite] = useState(false);
-  useEffect(() => {
+  const [lite] = useState(() => {
     const nav = navigator as Navigator & { deviceMemory?: number };
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // "lite" = drop the expensive watercolour pass + DPR: phones, low-core/low-memory
     // machines, or anyone who's asked for reduced motion.
-    const slow =
+    return (
       window.innerWidth < 768 ||
       reduced ||
       (nav.hardwareConcurrency ?? 8) <= 4 ||
-      (nav.deviceMemory ?? 8) <= 4;
-    setLite(slow);
-    setOk(true);
-  }, []);
-  if (!ok) return <div className="absolute inset-0" />;
+      (nav.deviceMemory ?? 8) <= 4
+    );
+  });
   return (
     <div className="absolute inset-0">
       <Canvas camera={{ position: [0, 2.2, 1.4], fov: 50 }} dpr={lite ? 1 : [1, 1.5]}>
