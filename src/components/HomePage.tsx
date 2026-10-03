@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useTina } from "tinacms/dist/react";
+import type { ArtCategory } from "@/artCategories";
 import GrowingRose from "@/components/GrowingRose";
 
 interface SiteSettings {
@@ -15,12 +16,13 @@ interface SiteSettings {
 }
 
 interface HomePageProps {
+  categories: ArtCategory[];
   query: string;
   variables: Record<string, unknown>;
   data: unknown;
 }
 
-export default function HomePage({ query, variables, data }: HomePageProps) {
+export default function HomePage({ query, variables, data, categories }: HomePageProps) {
   const [showVine, setShowVine] = useState(false);
 
   useEffect(() => {
@@ -67,7 +69,7 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
           <p
             className="text-sm md:text-base mt-1 tracking-widest uppercase font-light"
             style={{
-              background: "linear-gradient(90deg, rgba(245,198,208,0.6), rgba(232,160,176,0.5), rgba(242,208,216,0.6), rgba(219,160,184,0.5), rgba(245,198,208,0.6))",
+              background: "linear-gradient(90deg, rgba(245,198,208,0.9), rgba(232,160,176,0.85), rgba(242,208,216,0.9), rgba(219,160,184,0.85), rgba(245,198,208,0.9))",
               backgroundSize: "300% 100%",
               WebkitBackgroundClip: "text",
               backgroundClip: "text",
@@ -78,13 +80,18 @@ export default function HomePage({ query, variables, data }: HomePageProps) {
             {settings.subtitle || "Sydney-based Watercolour and Oil Artist"}
           </p>
 
-          <Link
-            href="/work"
-            className="mt-8 inline-block text-xs tracking-widest uppercase font-light pointer-events-auto hover:opacity-100 transition-opacity duration-300"
-            style={{ color: "rgba(245, 198, 208, 0.4)" }}
-          >
-            View Work →
-          </Link>
+          <nav aria-label="Art categories" className="mt-6 flex flex-col items-start gap-4">
+            {categories.map(({ slug, label }) => (
+              <Link
+                key={slug}
+                href={`/${slug}`}
+                className="inline-block text-xs tracking-widest uppercase font-light pointer-events-auto hover:opacity-100 transition-opacity duration-300"
+                style={{ color: "rgba(245, 198, 208, 0.85)" }}
+              >
+                View {label} →
+              </Link>
+            ))}
+          </nav>
         </motion.div>
       </div>
     </>

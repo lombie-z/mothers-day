@@ -4,24 +4,25 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTina } from "tinacms/dist/react";
+import type { ArtCategory } from "@/artCategories";
 import PortfolioSection, { PortfolioItem } from "@/components/PortfolioSection";
 
 interface WorkPageProps {
+  category: ArtCategory["slug"];
   query: string;
   variables: Record<string, unknown>;
   data: unknown;
 }
 
-export default function WorkPage({ query, variables, data }: WorkPageProps) {
+export default function WorkPage({ category, query, variables, data }: WorkPageProps) {
   const { data: tinaData } = useTina({
     query,
     variables,
     data: data as object,
-    experimental___selectFormByFormId: () => "content/portfolio.json",
+    experimental___selectFormByFormId: () => `content/${category}/portfolio.json`,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const works: PortfolioItem[] = (tinaData as any)?.portfolio?.works ?? [];
+  const works = (tinaData as Record<string, { works?: PortfolioItem[] }>)?.[category]?.works ?? [];
 
   const router = useRouter();
   const [current, setCurrent] = useState(0);

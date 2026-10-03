@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/admin",
-        destination: "/admin/index.html#/~/work",
+        destination: "/admin/index.html#/~/",
         permanent: false,
       },
     ];

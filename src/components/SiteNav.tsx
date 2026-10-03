@@ -41,8 +41,8 @@ function AboutModal({ settings, onClose }: { settings: SiteSettings; onClose: ()
         <h2 className="text-3xl mb-4 font-light" style={{ fontFamily: "var(--font-cormorant)", color: "#f5c6d0" }}>
           About
         </h2>
-        <p className="text-white/70 text-sm leading-relaxed mb-4">
-          {settings.aboutText || ""}
+        <p className="text-white/70 text-sm leading-relaxed mb-4 whitespace-pre-line">
+          {settings.aboutText?.replaceAll("[br]", "\n") || ""}
         </p>
         {settings.aboutCta && (
           <p className="text-white/50 text-sm leading-relaxed">
